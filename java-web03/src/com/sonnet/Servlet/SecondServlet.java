@@ -1,5 +1,6 @@
 package com.sonnet.Servlet;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,19 @@ import java.io.PrintWriter;
 import java.util.Enumeration;
 
 public class SecondServlet extends HttpServlet {
+
+    @Override
+    public void init() throws ServletException {
+        ServletContext servletContext = getServletContext();
+        System.out.println("initParameter:");
+        Enumeration<String> initParameterNames = servletContext.getInitParameterNames();
+        while (initParameterNames.hasMoreElements()) {
+            String initParameterName = initParameterNames.nextElement();
+            String initParameterValue = servletContext.getInitParameter(initParameterName);
+            System.out.println(initParameterName + " => " + initParameterValue);
+        }
+        System.out.println("上下文路径：" + servletContext.getContextPath());
+    }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,15 +39,14 @@ public class SecondServlet extends HttpServlet {
             String requestURI = req.getRequestURI(); // 包含上下文路径在内的请求地址
             requestURI = requestURI.replace(contextPath, "");
             System.out.println("当前请求路径：" + requestURI);
-
-            System.out.println("=========================");
-            System.out.println("开始做出响应");
-            resp.setCharacterEncoding("UTF-8");
-            resp.setContentType("text/html;charset=uft-8");
-            PrintWriter writer = resp.getWriter();
-            writer.println("请求已处理");
-            writer.flush();
-            writer.close();
         }
+        System.out.println("=========================");
+        System.out.println("开始做出响应");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
+        PrintWriter writer = resp.getWriter();
+        writer.println("请求已处理");
+        writer.flush();
+        writer.close();
     }
 }
