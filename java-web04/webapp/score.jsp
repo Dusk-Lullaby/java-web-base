@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>成绩信息展示</title>
@@ -40,6 +41,7 @@
         <tr>
             <th>姓名</th>
             <th>成绩</th>
+            <th>考试时间</th>
         </tr>
         </thead>
         <tbody>
@@ -51,9 +53,24 @@
                 <td>
                     ${score.score}
                 </td>
+                <td>
+                    <fmt:formatDate value="${score.examDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                </td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
+    <div>
+        货币类型数字：<fmt:formatNumber value="100" type="currency" />
+    </div>
+    <div>
+        数字格式化：<fmt:formatNumber value="12345.678902" type="number" maxIntegerDigits="4" maxFractionDigits="3" />
+    </div>
+    <div>
+        数字格式化:<fmt:formatNumber value="12345.678902" type="number" pattern="####.##"/>
+    </div>
+    <div>
+        百分比数字：<fmt:formatNumber value="12345.678902" type="percent" maxIntegerDigits="3" maxFractionDigits="2" />
+    </div>
 </body>
 </html>

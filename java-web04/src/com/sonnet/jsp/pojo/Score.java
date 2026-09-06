@@ -1,10 +1,22 @@
 package com.sonnet.jsp.pojo;
 
+import java.util.Date;
+
 public class Score {
 
     private String name;
 
     private double score;
+
+    private Date examDate = new Date();
+
+    public Date getExamDate() {
+        return examDate;
+    }
+
+    public void setExamDate(Date examDate) {
+        this.examDate = examDate;
+    }
 
     public Score(String name, double score) {
         this.name = name;
