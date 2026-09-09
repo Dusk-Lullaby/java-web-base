@@ -65,3 +65,7 @@ Desktop.ini
 *.swp
 *.swo
 *~
+
+### data ###
+/java-web06/upload/
+/java-web06/download/
