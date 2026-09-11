@@ -1,5 +1,7 @@
 package com.sonnet.jsp.servlet;
 
+import com.sonnet.excel.ExcelUtil;
+import com.sonnet.pojo.Student;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,6 +11,8 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/download")
 public class DownloadServlet extends HttpServlet {
@@ -33,6 +37,9 @@ public class DownloadServlet extends HttpServlet {
             // 获取响应的输出流，这个流就会将信息输出到页面，从而形成下载的效果
             OutputStream outputStream = resp.getOutputStream();
             // 传输信息
+            // 这个是假数据，实际数据应该从数据库中查询出来
+            //List<Student> studentList = new ArrayList<>();
+            //ExcelUtil.writeExcel(outputStream, Student.class, "信息表", studentList);
             IOUtils.copy(inputStream,  outputStream);
             IOUtils.closeQuietly(inputStream);
             IOUtils.closeQuietly(outputStream);

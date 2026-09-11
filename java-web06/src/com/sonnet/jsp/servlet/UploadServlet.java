@@ -1,5 +1,7 @@
 package com.sonnet.jsp.servlet;
 
+import com.sonnet.excel.ExcelUtil;
+import com.sonnet.pojo.Student;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,6 +17,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/upload")
@@ -76,6 +79,7 @@ public class UploadServlet extends HttpServlet {
                         File saveFile = new File(dir, fileItem.getName());
                         // 获取上传文件的输入流
                         InputStream inputStream = fileItem.getInputStream();
+                        List<Student> studentList = ExcelUtil.readExcel(inputStream,  Student.class);
                         // 获取上传文件的输出流
                         OutputStream outputStream = new FileOutputStream(saveFile);
                         // 将输入流中的信息拷贝至输出流中，这就是文件保存
