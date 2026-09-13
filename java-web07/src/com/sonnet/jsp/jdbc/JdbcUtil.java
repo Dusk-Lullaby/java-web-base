@@ -69,7 +69,7 @@ public class JdbcUtil {
                 }
             }
             // 获取预编译语句执行后产生的查询结果集
-            ResultSet resultSet = preparedStatement.getResultSet();
+            ResultSet resultSet = preparedStatement.executeQuery();
             // 使用调用者传入的处理器将结果集转换为指定类型
             T t = handler.handle(resultSet);
             // 关闭结果集资源
@@ -78,12 +78,52 @@ public class JdbcUtil {
             preparedStatement.close();
             // 关闭连接，将连接归还给 Druid 连接池
             connection.close();
+            return t;
         // 捕获数据库操作过程中出现的 SQL 异常
         } catch (SQLException e) {
             // 将受检的 SQL 异常包装成运行时异常并继续抛出
             throw new RuntimeException(e);
         }
-        // 当前方法没有返回上面处理得到的变量 t，因此暂时返回 null
-        return null;
+    }
+
+    /**
+     * 万能更新
+     * @param sql
+     * @param params
+     * @return
+     */
+    public static int update(String sql, Object...params) {
+        Connection connection = null;
+        // 开始捕获 JDBC 操作可能出现的 SQL 异常
+        try {
+            // 从 Druid 连接池中获取一个数据库连接
+            connection = dataSource.getConnection();
+            // 根据传入的 SQL 创建预编译语句对象
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            // 判断调用者是否传入了 SQL 占位符参数
+            if (params != null && params.length > 0) {
+                // 遍历所有 SQL 参数
+                for (int i = 0; i < params.length; i++) {
+                    // 将参数依次设置到 SQL 的问号占位符中，JDBC 参数下标从 1 开始
+                    preparedStatement.setObject(i + 1, params[i]);
+                }
+            }
+            int affectedRows = preparedStatement.executeUpdate();
+            connection.commit();
+            preparedStatement.close();
+            connection.close();
+            return affectedRows;
+            // 捕获数据库操作过程中出现的 SQL 异常
+        } catch (SQLException e) {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            // 将受检的 SQL 异常包装成运行时异常并继续抛出
+            throw new RuntimeException(e);
+        }
     }
 }

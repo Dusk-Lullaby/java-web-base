@@ -8,9 +8,24 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>查询</title>
 </head>
 <body>
-
+    <input type="button" value="查询" id="searchBtn">
 </body>
+<script type="text/javascript" src="js/jquery-3.1.1.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#searchBtn").click(function () {
+            $.ajax( {
+                url:"search",
+                type: "get",
+                data: {},
+                success: function (resp) {
+                    console.log(resp);
+                }
+            })
+        })
+    })
+</script>
 </html>
