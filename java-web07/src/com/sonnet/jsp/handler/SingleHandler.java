@@ -53,6 +53,9 @@ public class SingleHandler<T> implements ResultHandler<T> {
 
             // 捕获创建对象和设置属性时可能出现的异常
             try {
+                if (clazz.isPrimitive() || Integer.class == clazz || Long.class == clazz) {
+                    return resultSet.getObject(1, clazz);
+                }
                 // 调用无参构造方法创建一个 JavaBean 对象
                 T bean = clazz.getDeclaredConstructor().newInstance();
                 // 创建 Map，用于保存“列名和列值”的对应关系

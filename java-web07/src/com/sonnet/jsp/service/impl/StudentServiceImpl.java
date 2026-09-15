@@ -15,4 +15,9 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> searchStudents() {
         return studentDao.searchStudents();
     }
+
+    @Override
+    public int updateStudent(String id, String name, String sex, String age) {
+        return studentDao.updateStudent(id, name, sex, age);
+    }
 }

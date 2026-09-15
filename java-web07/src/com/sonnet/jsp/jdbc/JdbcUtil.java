@@ -109,7 +109,6 @@ public class JdbcUtil {
                 }
             }
             int affectedRows = preparedStatement.executeUpdate();
-            connection.commit();
             preparedStatement.close();
             connection.close();
             return affectedRows;

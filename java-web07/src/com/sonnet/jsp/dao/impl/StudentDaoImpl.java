@@ -14,4 +14,12 @@ public class StudentDaoImpl implements StudentDao {
         String sql = "SELECT id,name,sex,age FROM student";
         return JdbcUtil.query(sql, new MultiResultHandler<>(Student.class));
     }
+
+
+    @Override
+    public int updateStudent(String id, String name, String sex, String age) {
+        String sql = "UPDATE student SET name=?, sex=?, age=? WHERE id=?";
+        return JdbcUtil.update(sql, name, sex, age, id);
+    }
+
 }
